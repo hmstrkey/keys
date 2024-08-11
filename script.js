@@ -142,30 +142,31 @@ function generateRandomUUID() {
 const generateButton = document.getElementById('generateButton');
 const generateTimeValue = document.getElementById('generate-time-value');
 const generateProcessBlock = document.getElementById('process-generate-block');
-const keyBlock = document.getElementById('keys-block');
+let keyBlock = document.getElementById('keys-block');
 
 async function generate() {
     generateButton.style.display = 'none';
+    const gamesSelect = document.getElementById('game-names-select');
+    gamesSelect.disabled = true;
     generateProcessBlock.style.display = 'flex';
     const endGenerateTime = Date.now() + 4 * 40 * 1000;
 
-    keyBlock.innerHTML = ''; // Очистка блока с ключами
+    const selectedGame = parseInt(gamesSelect.value);
+
     keyBlock.style.display = 'none';
 
-    generateTimeValue.innerText = 'Ожидайте...';
+    generateTimeValue.innerText = '⏳';
 
     let generateTimeInterval = setInterval(() => startProcessGeneration(endGenerateTime), 1000);
-
     const codes = [];
 
     await new Promise(resolve => setTimeout(resolve, 5000));
 
     const tasks = [];
 
-    // Генерируем 4 кода для каждой из 4 игр
-    for (let gameIndex = 1; gameIndex <= 4; gameIndex++) {
-        for (let i = 0; i < 4; i++) {
-            tasks.push((async (gameIndex) => {
+    for (let i = 1; i <= 4; i++) {
+        for (let j = 0; j < 4; j++) {
+            tasks.push((async (gameIndex, codeIndex) => {
                 try {
                     let token = await loginClient(gameIndex);
                     let registerToken = await registerEvent(token, gameIndex);
@@ -174,7 +175,7 @@ async function generate() {
                 } catch (error) {
                     codes.push({ gameIndex, promoCode: `Error: ${error.message}` });
                 }
-            })(gameIndex));
+            })(i, j));
         }
     }
 
@@ -182,7 +183,8 @@ async function generate() {
 
     keyBlock.style.display = 'flex';
 
-    codes.forEach((code) => {
+    keyBlock.innerHTML = '';
+    codes.forEach((code, index) => {
         const keyContainer = document.createElement('div');
         keyContainer.className = 'key-container';
 
@@ -205,6 +207,7 @@ async function generate() {
     });
 
     generateButton.style.display = 'block';
+    gamesSelect.disabled = false;
     clearInterval(generateTimeInterval);
     generateProcessBlock.style.display = 'none';
     generateTimeValue.innerText = '👌';
@@ -220,13 +223,13 @@ function startProcessGeneration(generationTime) {
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        generateTimeValue.innerText = '' +
+        generateTimeValue.innerText = '≈ ' +
             String(hours).padStart(2, '0') + ':' +
             String(minutes).padStart(2, '0') + ':' +
             String(seconds).padStart(2, '0');
 
         if (distance < 0) {
-            generateTimeValue.innerText = "Ожидайте...";
+            generateTimeValue.innerText = "⏳";
         }
     }
 
