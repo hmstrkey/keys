@@ -3,95 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hamster Generator</title>
-    <link rel="stylesheet" href="../style.css?v1.2.7">
-    <link rel="stylesheet" href="keys.css?v1.2.7">
-    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
-    <link rel="icon" href="../favicon.ico" type="image/x-icon">
-    <meta name="keywords" content="hamster kombat, ключ, мини-игра, тренировка, головоломка, хомяк, хамстер, август">
-    <meta name="robots" content="index, follow">
-    <meta name="title" content="Генератор ключей для мини игр">
-    <meta property="og:title" content="Hamster Puzzle">
-    <meta property="og:site_name" content="Hamster Puzzle">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://babaduk47.github.io">
-    <meta property="og:description"
-          content="В Hamster Kombat появились мини игры. Играй что бы получить ключи.">
-    <meta property="og:image" content="https://babaduk47.github.io/humster-puzzle.png">
-    <meta name="description"
-          content="В Hamster Kombat появились мини игры. Играй что бы получить ключи.">
+    <title>Генератор кодов Hamster Kombat</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-BL7SQ719F9"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-        dataLayer.push(arguments);
-    }
-
-    gtag('js', new Date());
-
-    gtag('config', 'G-BL7SQ719F9');
-</script>
-
-<body class="hamster-theme">
-<div class="container">
-    <div id="game-container">
-        <div class="caption">
-            <div id="caption-hamster">Hamster</div>
-            <div id="caption-puzzle">Puzzle</div>
-        </div>
-
-        <div style="display: flex">
-            <label for="game-names-select" class="game-names-label">Game:</label>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h2>Выберите игру для генерации ключей</h2>
+            <label for="game-names-select">Игра:</label>
             <select id="game-names-select">
                 <option value="1">Riding Extreme 3D</option>
                 <option value="2">Chain Cube 2048</option>
                 <option value="3">My Clone Army</option>
                 <option value="4">Train Miner</option>
             </select>
+            <button id="generateButton">Сгенерировать ключи</button>
         </div>
 
-        <div id="process-generate-block" style="width: 100%; flex-direction: column;">
-            <div class="generate-time-block">
-                <div id="generate-time-label">Time left:</div>
-                <div id="generate-time-value"></div>
+        <div class="form-container">
+            <h2>Процесс получения ключей</h2>
+            <div id="process-generate-block" style="display: none;">
+                <p id="generate-time-value">⏳</p>
             </div>
-            <progress id="process-generate" value="0" max="100">0</progress>
-        </div>
-
-        <div id="keys-block">
-            <div class="key-group">
-                <div class="key-label" translate="no">Key 1:</div>
-                <div class="key-value" id="keys-value-1" translate="no"></div>
+            <div id="keys-block" style="display: none;">
+                <!-- Ключи будут добавляться динамически -->
             </div>
-            <div class="key-group">
-                <div class="key-label" translate="no">Key 2:</div>
-                <div class="key-value" id="keys-value-2" translate="no"></div>
-            </div>
-            <div class="key-group">
-                <div class="key-label" translate="no">Key 3:</div>
-                <div class="key-value" id="keys-value-3" translate="no"></div>
-            </div>
-            <div class="key-group">
-                <div class="key-label" translate="no">Key 4:</div>
-                <div class="key-value" id="keys-value-4" translate="no"></div>
-            </div>
-        </div>
-
-        <button class="button" id="generateButton">Generate keys</button>
-
-        <div class="footer">
-            <div id="footer-social">
-                <a href="https://t.me/v_stasiuk47" target="_blank">
-                    <img src="../telegram-logo.jpeg" alt="telegram logo">
-                    feedback
-                </a>
-            </div>
-            <div id="footer-version">v1.2.7</div>
         </div>
     </div>
-</div>
-<script src="keys.js?v1.2.7"></script>
+
+    <script src="script.js"></script>
 </body>
 </html>
