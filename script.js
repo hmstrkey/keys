@@ -142,31 +142,30 @@ function generateRandomUUID() {
 const generateButton = document.getElementById('generateButton');
 const generateTimeValue = document.getElementById('generate-time-value');
 const generateProcessBlock = document.getElementById('process-generate-block');
-let keyBlock = document.getElementById('keys-block');
+const keyBlock = document.getElementById('keys-block');
 
 async function generate() {
     generateButton.style.display = 'none';
-    const gamesSelect = document.getElementById('game-names-select');
-    gamesSelect.disabled = true;
     generateProcessBlock.style.display = 'flex';
     const endGenerateTime = Date.now() + 4 * 40 * 1000;
 
-    const selectedGame = parseInt(gamesSelect.value);
-
+    keyBlock.innerHTML = ''; // Очистка блока с ключами
     keyBlock.style.display = 'none';
 
     generateTimeValue.innerText = '⏳';
 
     let generateTimeInterval = setInterval(() => startProcessGeneration(endGenerateTime), 1000);
+
     const codes = [];
 
     await new Promise(resolve => setTimeout(resolve, 5000));
 
     const tasks = [];
 
-    for (let i = 1; i <= 4; i++) {
-        for (let j = 0; j < 4; j++) {
-            tasks.push((async (gameIndex, codeIndex) => {
+    // Генерируем 4 кода для каждой из 4 игр
+    for (let gameIndex = 1; gameIndex <= 4; gameIndex++) {
+        for (let i = 0; i < 4; i++) {
+            tasks.push((async (gameIndex) => {
                 try {
                     let token = await loginClient(gameIndex);
                     let registerToken = await registerEvent(token, gameIndex);
@@ -175,7 +174,7 @@ async function generate() {
                 } catch (error) {
                     codes.push({ gameIndex, promoCode: `Error: ${error.message}` });
                 }
-            })(i, j));
+            })(gameIndex));
         }
     }
 
@@ -183,8 +182,7 @@ async function generate() {
 
     keyBlock.style.display = 'flex';
 
-    keyBlock.innerHTML = '';
-    codes.forEach((code, index) => {
+    codes.forEach((code) => {
         const keyContainer = document.createElement('div');
         keyContainer.className = 'key-container';
 
@@ -207,7 +205,6 @@ async function generate() {
     });
 
     generateButton.style.display = 'block';
-    gamesSelect.disabled = false;
     clearInterval(generateTimeInterval);
     generateProcessBlock.style.display = 'none';
     generateTimeValue.innerText = '👌';
