@@ -1,55 +1,139 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-    overflow: auto;
+    background-color: #f0f0f0;
+    padding: 20px;
 }
 
 .container {
-    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.form-container {
+    width: 48%;
+    background-color: #fff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    overflow: auto;
+}
+
+.form-container h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
     text-align: center;
-    max-width: 400px;
-    width: 100%;
 }
 
-h1 {
-    text-align: center;
+.form-container > * {
+    margin-bottom: 10px;
 }
 
-#results {
-    margin-top: 20px;
-    max-height: 60vh;
-    overflow-y: auto;
-}
-
-.key-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 5px;
-    background-color: #f9f9f9;
-    margin: 3px 0;
+input[type="file"],
+input[type="text"],
+textarea,
+select {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
     border-radius: 5px;
+    box-sizing: border-box;
 }
 
-button.copy-btn {
-    background-color: #007BFF;
-    color: white;
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 4"><path d="M4 4L0 0h8z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 8px;
+}
+
+button {
+    width: calc(100% - 22px);
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
     border: none;
-    padding: 5px 10px;
     border-radius: 5px;
     cursor: pointer;
+    margin-top: 10px;
+    display: block;
 }
 
-#timer {
-    margin-top: 20px;
-    font-size: 20px;
-    color: #555;
+button:hover {
+    background-color: #0056b3;
+}
+
+.custom-file-upload {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.custom-file-upload input[type="file"] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 100px;
+    cursor: pointer;
+    opacity: 0;
+}
+
+label {
+    display: block;
+}
+
+#jsonDataDisplay {
+    white-space: pre;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-family: monospace;
+    overflow-x: auto;
+    max-height: 100px;
+}
+
+.json-key {
+    color: red;
+}
+
+.json-string {
+    color: green;
+}
+
+.json-boolean {
+    color: goldenrod;
+}
+
+@media screen and (min-width: 801px) {
+    .container {
+        gap: 20px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .form-container {
+        width: 95%;
+        margin-bottom: 20px;
+    }
+
+    #jsonDataDisplay {
+        width: 95%;
+        margin: 0 auto;
+    }
 }
