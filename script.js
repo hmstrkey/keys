@@ -152,7 +152,7 @@ async function generate() {
     keyBlock.innerHTML = ''; // Очистка блока с ключами
     keyBlock.style.display = 'none';
 
-    generateTimeValue.innerText = '⏳';
+    generateTimeValue.innerText = 'Ожидайте...';
 
     let generateTimeInterval = setInterval(() => startProcessGeneration(endGenerateTime), 1000);
 
