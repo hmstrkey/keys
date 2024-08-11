@@ -32,7 +32,6 @@ function generateClientId() {
     return `${timestamp}-${randomNumbers.join('')}`;
 }
 
-
 async function loginClient(gameNumber) {
     const clientId = generateClientId();
     const url = 'https://api.gamepromo.io/promo/login-client';
@@ -147,12 +146,12 @@ let keyBlock = document.getElementById('keys-block');
 
 async function generate() {
     generateButton.style.display = 'none';
-    const games = document.getElementById('game-names-select');
-    games.disabled = true;
+    const gamesSelect = document.getElementById('game-names-select');
+    gamesSelect.disabled = true;
     generateProcessBlock.style.display = 'flex';
     const endGenerateTime = Date.now() + 4 * 40 * 1000;
 
-    const selectedGame = parseInt(games.value);
+    const selectedGame = parseInt(gamesSelect.value);
 
     keyBlock.style.display = 'none';
 
@@ -165,29 +164,50 @@ async function generate() {
 
     const tasks = [];
 
-    for (let i = 0; i < 4; i++) {
-        tasks.push((async (index) => {
-            try {
-                let token = await loginClient(selectedGame);
-                let registerToken = await registerEvent(token, selectedGame);
-                codes[index] = await createCode(registerToken, selectedGame);
-            } catch (error) {
-                codes[index] = `Error: ${error.message}`;
-            }
-        })(i));
+    for (let i = 1; i <= 4; i++) {
+        for (let j = 0; j < 4; j++) {
+            tasks.push((async (gameIndex, codeIndex) => {
+                try {
+                    let token = await loginClient(gameIndex);
+                    let registerToken = await registerEvent(token, gameIndex);
+                    let promoCode = await createCode(registerToken, gameIndex);
+                    codes.push({ gameIndex, promoCode });
+                } catch (error) {
+                    codes.push({ gameIndex, promoCode: `Error: ${error.message}` });
+                }
+            })(i, j));
+        }
     }
 
     await Promise.all(tasks);
 
     keyBlock.style.display = 'flex';
 
-    for (let i = 0; i < 4; i++) {
-        let keyValue = document.getElementById('keys-value-' + (i + 1));
-        keyValue.innerText = codes[i];
-    }
+    keyBlock.innerHTML = '';
+    codes.forEach((code, index) => {
+        const keyContainer = document.createElement('div');
+        keyContainer.className = 'key-container';
+
+        const keyText = document.createElement('span');
+        keyText.className = 'key-text';
+        keyText.innerText = code.promoCode;
+
+        const copyButton = document.createElement('button');
+        copyButton.className = 'copy-button';
+        copyButton.innerText = 'Copy';
+        copyButton.addEventListener('click', () => {
+            navigator.clipboard.writeText(code.promoCode).then(() => {
+                alert('Code copied to clipboard');
+            });
+        });
+
+        keyContainer.appendChild(keyText);
+        keyContainer.appendChild(copyButton);
+        keyBlock.appendChild(keyContainer);
+    });
 
     generateButton.style.display = 'block';
-    games.disabled = false;
+    gamesSelect.disabled = false;
     clearInterval(generateTimeInterval);
     generateProcessBlock.style.display = 'none';
     generateTimeValue.innerText = '👌';
