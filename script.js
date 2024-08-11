@@ -1,39 +1,33 @@
 document.getElementById('generate-btn').addEventListener('click', function () {
-    const gameChoice = document.getElementById('game-select').value;
-    const keyCount = document.getElementById('key-count').value;
+    startTimer(120);  // Таймер на 2 минуты (120 секунд)
+    
+    const games = {
+        1: { name: 'Riding Extreme 3D', promoId: 'd28721be-fd2d-4b45-869e-9f253b554e50' },
+        2: { name: 'Chain Cube 2048', promoId: 'd1690a07-3780-4068-810f-9b5bbf2931b2' },
+        3: { name: 'My Clone Army', promoId: '74ee0b5b-775e-4bee-974f-63e7f4d5bacb' },
+        4: { name: 'Train Miner', promoId: '82647f43-3f87-402d-88dd-09a90025313f' },
+    };
 
-    if (!keyCount || keyCount < 1 || keyCount > 4) {
-        alert("Please enter a valid number of keys (1-4)");
-        return;
-    }
-
-    startTimer(5, () => { // Таймер на 5 секунд
-        const games = {
-            1: { name: 'Riding Extreme 3D', promoId: '43e35910' },
-            2: { name: 'Chain Cube 2048', promoId: 'b4170868' },
-            3: { name: 'My Clone Army', promoId: 'fe693b26' },
-            4: { name: 'Train Miner', promoId: 'c4480ac7' },
-        };
-
-        const selectedGame = games[gameChoice];
-        const keys = generateKeys(selectedGame.promoId, keyCount);
-        displayKeys(keys);
+    const results = [];
+    Object.values(games).forEach(game => {
+        const keys = generateKeys(game.promoId, 4);  // Генерация 4 ключей для каждой игры
+        results.push({ gameName: game.name, keys: keys });
     });
+
+    displayKeys(results);
 });
 
-function startTimer(seconds, callback) {
+function startTimer(seconds) {
     const timerDiv = document.getElementById('timer');
     timerDiv.style.display = 'block';
-    timerDiv.innerText = `Waiting... ${seconds}s`;
 
     const interval = setInterval(() => {
         seconds--;
-        timerDiv.innerText = `Waiting... ${seconds}s`;
+        timerDiv.innerText = `Approximately ${Math.ceil(seconds / 60)} minutes remaining...`;
 
         if (seconds <= 0) {
             clearInterval(interval);
-            timerDiv.style.display = 'none';
-            callback();
+            timerDiv.innerText = 'Generation complete!';
         }
     }, 1000);
 }
@@ -47,15 +41,21 @@ function generateKeys(promoId, count) {
     return keys;
 }
 
-function displayKeys(keys) {
+function displayKeys(results) {
     const resultsDiv = document.getElementById('results');
     resultsDiv.innerHTML = '';
 
-    keys.forEach(key => {
-        const keyDiv = document.createElement('div');
-        keyDiv.className = 'key-item';
-        keyDiv.innerHTML = `<span>${key}</span><button class="copy-btn">Copy</button>`;
-        resultsDiv.appendChild(keyDiv);
+    results.forEach(result => {
+        const title = document.createElement('h2');
+        title.innerText = result.gameName;
+        resultsDiv.appendChild(title);
+
+        result.keys.forEach(key => {
+            const keyDiv = document.createElement('div');
+            keyDiv.className = 'key-item';
+            keyDiv.innerHTML = `<span>${key}</span><button class="copy-btn">Copy</button>`;
+            resultsDiv.appendChild(keyDiv);
+        });
     });
 
     document.querySelectorAll('.copy-btn').forEach(button => {
