@@ -137,37 +137,3 @@ label {
         margin: 0 auto;
     }
 }
-
-/* Стили для блока с ключами */
-#keys-block {
-    display: flex;
-    flex-direction: column;
-}
-
-.key-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    background-color: #f9f9f9;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-}
-
-.key-text {
-    margin-right: 10px;
-    flex: 1;
-}
-
-.copy-button {
-    padding: 5px 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.copy-button:hover {
-    background-color: #0056b3;
-}
