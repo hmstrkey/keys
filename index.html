@@ -9,17 +9,27 @@
 <body>
     <div class="container">
         <div class="form-container">
-            <h2>Нажмите кнопку</h2>
+            <h2>Выберите игру для генерации ключей</h2>
+            <label for="game-names-select">Игра:</label>
+            <select id="game-names-select">
+                <option value="1">Riding Extreme 3D</option>
+                <option value="2">Chain Cube 2048</option>
+                <option value="3">My Clone Army</option>
+                <option value="4">Train Miner</option>
+            </select>
             <button id="generateButton">Сгенерировать ключи</button>
         </div>
 
         <div class="form-container">
-            <h2>Ключи:</h2>
+            <h2>Процесс получения ключей</h2>
             <div id="process-generate-block" style="display: none;">
-                <p id="generate-time-value">Ожидайте...</p>
+                <p id="generate-time-value">⏳</p>
             </div>
             <div id="keys-block" style="display: none;">
-                <!-- Ключи будут добавляться динамически -->
+                <p>Ключ 1: <span id="keys-value-1"></span></p>
+                <p>Ключ 2: <span id="keys-value-2"></span></p>
+                <p>Ключ 3: <span id="keys-value-3"></span></p>
+                <p>Ключ 4: <span id="keys-value-4"></span></p>
             </div>
         </div>
     </div>
