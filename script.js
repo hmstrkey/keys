@@ -145,14 +145,14 @@ const generateProcessBlock = document.getElementById('process-generate-block');
 let keyBlock = document.getElementById('keys-block');
 
 async function generate() {
-    // ... Ваш существующий код ...
-
-async function generate() {
     generateButton.style.display = 'none';
+    const gamesSelect = document.getElementById('game-names-select');
+    gamesSelect.disabled = true;
     generateProcessBlock.style.display = 'flex';
     const endGenerateTime = Date.now() + 4 * 40 * 1000;
 
-    keyBlock.innerHTML = ''; // Очистка блока с ключами
+    const selectedGame = parseInt(gamesSelect.value);
+
     keyBlock.style.display = 'none';
 
     generateTimeValue.innerText = '⏳';
@@ -164,10 +164,9 @@ async function generate() {
 
     const tasks = [];
 
-    // Генерируем ключи для всех игр
     for (let i = 1; i <= 4; i++) {
         for (let j = 0; j < 4; j++) {
-            tasks.push((async (gameIndex) => {
+            tasks.push((async (gameIndex, codeIndex) => {
                 try {
                     let token = await loginClient(gameIndex);
                     let registerToken = await registerEvent(token, gameIndex);
@@ -176,7 +175,7 @@ async function generate() {
                 } catch (error) {
                     codes.push({ gameIndex, promoCode: `Error: ${error.message}` });
                 }
-            })(i));
+            })(i, j));
         }
     }
 
@@ -184,7 +183,8 @@ async function generate() {
 
     keyBlock.style.display = 'flex';
 
-    codes.forEach((code) => {
+    keyBlock.innerHTML = '';
+    codes.forEach((code, index) => {
         const keyContainer = document.createElement('div');
         keyContainer.className = 'key-container';
 
@@ -207,14 +207,12 @@ async function generate() {
     });
 
     generateButton.style.display = 'block';
+    gamesSelect.disabled = false;
     clearInterval(generateTimeInterval);
     generateProcessBlock.style.display = 'none';
     generateTimeValue.innerText = '👌';
     console.log(codes);
 }
-
-// ... Остальной код ...
-
 
 function startProcessGeneration(generationTime) {
     function updateProcessGenerationTime() {
